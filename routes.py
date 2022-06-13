@@ -1,7 +1,17 @@
 import json
-from flask import jsonify, request
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
-from app import app, db, redis_cli, bcrypt
+from flask_bcrypt import Bcrypt
+from flask_redis import FlaskRedis
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'ghjrhhrohirorthrtohi'
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@localhost/quizapp"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+redis_cli = FlaskRedis(app)
+bcrypt = Bcrypt(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -269,3 +279,6 @@ def result():
 
     except Exception as e:
         return {"error": e}
+
+
+
