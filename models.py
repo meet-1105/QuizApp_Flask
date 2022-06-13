@@ -1,5 +1,5 @@
 from routes import db
-
+#Commit
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
