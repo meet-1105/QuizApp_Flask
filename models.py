@@ -1,5 +1,4 @@
 from routes import db
-# Commit this File
 
 
 class User(db.Model):
