@@ -1,17 +1,7 @@
 import json
-from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify, request
 from sqlalchemy import func
-from flask_bcrypt import Bcrypt
-from flask_redis import Redis
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'ghjrhhrohirorthrtohi'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@localhost/quizapp"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-redis_cli = Redis(app)
-bcrypt = Bcrypt(app)
+from app import app, db, redis_cli, bcrypt
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -279,7 +269,3 @@ def result():
 
     except Exception as e:
         return {"error": e}
-
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5003)
