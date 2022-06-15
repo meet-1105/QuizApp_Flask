@@ -86,7 +86,7 @@ def quiz():
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
             response = {"status": "True", "message": "data stored successfully"}
-            return jsonify({'response': response, "data": qa_list[:5]})
+            return jsonify({'response': response, "data": qa_list[:10]})
 
         else:
 
@@ -98,7 +98,7 @@ def quiz():
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
             response = {"status": "True", "message": "data stored successfully"}
-            return {'response': response, 'data': qa_list[:5]}
+            return {'response': response, 'data': qa_list[:10]}
 
     except:
         return "{'error':'invalid data'}"
