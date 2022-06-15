@@ -79,26 +79,26 @@ def quiz():
         data = request.get_json()
         if data.get("data") is not None:
             import random
-            qes = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).limit(5).all()
+            qes = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).all()
             qa_list = []
             for qa in qes:
                 qa_data = {'id': qa.id, 'question': qa.question,
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
             response = {"status": "True", "message": "data stored successfully"}
-            return jsonify({'response': response, "data": qa_list})
+            return jsonify({'response': response, "data": qa_list[:5]})
 
         else:
 
             import random
-            questions = QA.query.order_by(func.random()).limit(5).all()
+            questions = QA.query.order_by(func.random()).all()
             qa_list = []
             for qa in questions:
                 qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question,
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
             response = {"status": "True", "message": "data stored successfully"}
-            return {'response': response, 'data': qa_list}
+            return {'response': response, 'data': qa_list[:5]}
 
     except:
         return "{'error':'invalid data'}"
