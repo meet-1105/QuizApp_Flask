@@ -79,7 +79,7 @@ def quiz():
         data = request.get_json()
         if data.get("data") is not None:
             import random
-            qes = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).all()
+            qes = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).order_by(func.random()).all()
             qa_list = []
             for qa in qes:
                 qa_data = {'id': qa.id, 'question': qa.question,
