@@ -1,0 +1,54 @@
+{% extends "layout1.html" %}
+<html>
+{%block content%}
+<head>
+    <title>Quizzes </title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">-->
+<!--       $("input[type='radio']").change(function(){-->
+<!--  	var count = $("input[type='radio']:checked").length;-->
+<!--	if(count>3){-->
+<!--		$(this).prop('checked', false);-->
+<!--      alert("You cannot add more than 3");-->
+<!--	}-->
+
+<!--    </script>-->
+<!--});-->
+</head>
+<body>
+<form method="post" action="/quiz_taken">
+    <div class="scp-quizzes-main">
+        <div class="scp-quizzes-data">
+
+            {% for qa in qa_list%}
+
+                <div class = 'card' style=" width:70rem; margin-left:20px;">
+                    <div class = 'card-block' style="margin-left:20px;margin-top:10px;">
+            <h4>{{loop.index}}{{". "+qa.question}}</h4>
+            <br/>
+                    <input type="radio" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}" required>
+                       <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
+                    <input type="radio" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
+                       <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
+                    <input type="radio" id="{{qa.options['option3']}}" name="question-{{qa.id}}"value="{{qa.get('options').get('option3')}}">
+                       <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
+                    <input type="radio" id="{{qa.options['option4']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
+
+                     <label for="{{qa.options['option4']}}" > {{qa.options['option4']}}</label>
+                    </div>
+                    </div>
+            {% endfor%}
+
+        </div>
+        <div style="font-size: 30px; margin-top: 1.5rem;">
+            <input type="submit" class="btn btn-outline-secondary"
+                   style="width: 70rem; height: 2.5rem; font-size: 1rem;margin-left: 10px;">
+        </div>
+
+    </div>
+    <br><br>
+</form>
+</body>
+{% endblock content %}
+</html>

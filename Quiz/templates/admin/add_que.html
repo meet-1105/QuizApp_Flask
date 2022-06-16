@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+  QUIZ | Add Question
+{% endblock %}
+
+{% block body %}
+<div
+    style="font-size: 50px; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+    Add Question
+</div>
+<br>
+<form id="quickForm" action="" method="POST" style="height: 2.5rem; font-size: 1rem;left: 20px;">
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="sub_name" placeholder="Add subject" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="question" placeholder="Type Question.." aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="option1" placeholder="Option #1" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="option2" placeholder="Option #2" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="option3" placeholder="Option #3" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="option4" placeholder="Option #4" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="correct_opt" placeholder="Correct Option" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div style="font-size: 30px; margin-top: 1.5rem;">
+        <button type="submit" class="btn btn-outline-secondary" style="width: 65rem; height: 2.5rem; font-size: 1rem;left: 20px;">Add Question</button>
+    </div>
+</form>
+{% endblock %}
+

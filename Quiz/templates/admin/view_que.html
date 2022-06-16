@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+<html>
+{%block content%}
+   <head>code
+      <title>  Quizzes </title>
+<!--                <link rel="stylesheet" type="text/css" href="./css/style.css" />-->
+
+   </head>
+{% block body %}
+   <body >
+<div >
+    <div>
+        {% for qa in qa_list%}
+        <div class="card">
+            <div class="card-block" style="margin-left: 10px; margin-top:15px;">
+
+
+                <h6>{{loop.index}}{{". "+qa.question}}
+          <a href="/edit/{{ qa.id }}" class="btn btn-info"> Edit</a>
+                    <a href="/delete/{{ qa.id }}" class="btn btn-info"> Delete</a></h6>
+    <br/>
+           <label >A. {{qa.get('options').get('option1')}}</label><br/>
+
+           <label>B.  {{qa.options["option2"]}}</label><br/>
+
+           <label>C.  {{qa.options["option3"]}}</label> <br/>
+
+         <label>D.  {{qa.options["option4"]}}</label><br/>
+        <label>Correct Option: <u>{{qa.correct_opt}}</u></label>
+          </div>
+</div>
+        {% endfor%}
+
+
+</div>
+</div>
+</body>
+{% endblock %}
+{% endblock content %}
+</html>
