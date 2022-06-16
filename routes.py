@@ -56,8 +56,14 @@ def login():
             user = User.query.filter_by(email=email).first()
             if user and bcrypt.check_password_hash(user.password, data.get('password')):
                 import codecs
+                from models import QA
+                ques = QA.query.all()
+                correct_options = json.dumps({x.id: x.correct_opt for x in ques})
+                print("correct_option", correct_options)
+                redis_cli.set('correct_opt', correct_options)
                 redis_cli.set('id', user.id)
                 redis_cli.set('username', user.username)
+                print("redis get", redis_cli.get('correct_opt'))
                 redis_un = codecs.decode(redis_cli.get('username'), 'UTF-8')
                 return_response = {"status": "True", "message": "Logged in successfully", "flag": "1",
                                    "username": redis_un}
@@ -109,10 +115,7 @@ def view_que():
     from models import QA
     try:
         questions = QA.query.all()
-        correct_options = json.dumps([x.correct_opt for x in questions])
-        print("correct_option", correct_options)
-        redis_cli.set('correct_opt', correct_options)
-        print("redis get", redis_cli.get('correct_opt'))
+
         qa_list = []
         for qa in questions:
             qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question, 'options': json.loads(qa.options),
@@ -224,19 +227,27 @@ def taken_quiz():
             import codecs
             redis_corr = eval(codecs.decode(redis_cli.get('correct_opt'), 'UTF-8'))
             data = request.get_json()
-            question1 = db.session.query(QA).filter(QA.id.in_(data.get('questions'))).all()
+            question1 = db.session.query(QA).filter(QA.id.in_(data.keys())).all()
             main_dict = {x.id: {'question': x.question, 'correct_opt': x.correct_opt} for x in question1}
-            user_result = {
-                "question": data.get('questions'),
-                "select_option": data.get('selected_option')
-            }
+            # user_result = {
+            #     "question": data.get('questions'),
+            #     "select_option": data.get('selected_options')
+            # }
             count = 0
-            for i in redis_corr:
-                if i in user_result["select_option"]:
-                    count = count + 1
+            for key1, value1 in data.items():
+                for key, value in redis_corr.items():
+                    if key1 == key:
+                        if value1 == value:
+                            count = count + 1
 
-            questions = data['questions']
-            sel_opt = data['selected_option']
+            questions = []
+            sel_opt = []
+            for key, value in data.items():
+                questions.append(key)
+                sel_opt.append(value)
+
+            # questions = data.keys()
+            # sel_opt = data.values()
             for q in questions:
                 main_dict[int(q)].update({
                     'selected_option': sel_opt[questions.index(q)]
@@ -279,6 +290,3 @@ def result():
 
     except Exception as e:
         return {"error": e}
-
-
-
