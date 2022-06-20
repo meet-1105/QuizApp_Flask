@@ -17,7 +17,7 @@ def register():
                 "password": request.form.get("password"),
                 "contact_no": request.form.get("contact_no"),
             }
-            url = 'http://400f-14-99-145-110.ngrok.io/register'
+            url = 'http://e386-14-99-145-110.ngrok.io/register'
 
             response = requests.post(url=url, json=data)
             if response.status_code == 200:
@@ -41,7 +41,7 @@ def login():
             "email": request.form.get("email"),
             "password": request.form.get("password"),
         }
-        url = 'http://400f-14-99-145-110.ngrok.io/login'
+        url = 'http://e386-14-99-145-110.ngrok.io/login'
         response = requests.post(url=url, json=data)
         if response.status_code == 200:
             status = json.loads(response.text)['status']
@@ -72,44 +72,34 @@ def index1():
 @app.route("/quiz", methods=['POST', 'GET'])
 def quiz():
     if session['logged_in']:
-        data = {"data": request.args.get("subject")}
-        response = requests.get(url='http://400f-14-99-145-110.ngrok.io/quiz', json=data)
+        subject = request.args.get("subject")
+        data = {"data": subject}
+        response = requests.get(url='http://e386-14-99-145-110.ngrok.io/quiz', json=data)
         qa_list = response.json()
         qa_list_data = qa_list.get('data')
-        return render_template('quiz.html', qa_list=qa_list_data)
+        return render_template('quiz.html', qa_list=qa_list_data, subject=subject)
     return redirect('/login')
 
 
 @app.route('/quiz_taken', methods=['GET', 'POST'])
 def quiz_taken():
-    import ast
     try:
         if request.method == 'POST':
             # for getting all the ids from the quiz template
             question_ids = [i.split("-")[1] for i in request.form.keys()]
             # for getting all the select option values from the quiz template
             selected_options = [x for x in request.form.values()]
-
-            print("((((",selected_options)
-            print("^^^",question_ids)
             dict = {}
             for key in question_ids:
                 for value in selected_options:
                     dict[key] = value
                     selected_options.remove(value)
                     break
-            # print("****",dict)
-            # pay_load = {
-            #     "questions": question_ids,
-            #     "selected_options":selected_options
-            # }
-            url = 'http://400f-14-99-145-110.ngrok.io/taken_quiz'
+            url = 'http://e386-14-99-145-110.ngrok.io/taken_quiz'
 
             response = requests.post(url=url, json=dict)
             data = response.json()
-            print("%%",data)
             data = json.loads(str(data["data"]))
-            # data = json.loads(data)
         return render_template('result.html', data=data, question_id=question_ids)
 
     except Exception as e:
@@ -118,13 +108,13 @@ def quiz_taken():
 
 @app.route("/result")
 def result():
-    response = requests.post(url='http://400f-14-99-145-110.ngrok.io/result')
+    response = requests.post(url='http://e386-14-99-145-110.ngrok.io/result')
     return render_template('result.html')
 
 
 @app.route("/quiz_history")
 def quiz_history():
-    response = requests.post(url='http://400f-14-99-145-110.ngrok.io/result')
+    response = requests.post(url='http://e386-14-99-145-110.ngrok.io/result')
     data = response.json()
     return render_template('quiz_history.html', data=data)
 
@@ -132,7 +122,7 @@ def quiz_history():
 @app.route("/view_all_que")
 def view_all_que():
     if session['logged_in']:
-        response = requests.post(url='http://400f-14-99-145-110.ngrok.io/view_que')
+        response = requests.post(url='http://e386-14-99-145-110.ngrok.io/view_que')
         qa_list = json.loads(response.text)
         qa_list_data = qa_list.get('data')
         return render_template('admin/view_que.html', qa_list=qa_list_data)
@@ -146,7 +136,10 @@ def home():
         if request.method == "POST":
             # subject = request.form.get('subject', "All")
             subject = request.form.getlist('subjects')
-            return redirect(f"/quiz?subject={subject}")
+            if subject:
+                return redirect(f"/quiz?subject={subject}")
+            else:
+                flash("Please select a subject!!")
         return render_template('home1.html', username=username)
     return redirect('/login')
 
@@ -180,7 +173,7 @@ def add_que():
                     "option4": form.option4.data,
                     "correct_option": form.correct_opt.data
                 }
-                url = 'http://400f-14-99-145-110.ngrok.io/add'
+                url = 'http://e386-14-99-145-110.ngrok.io/add'
                 response = requests.post(url=url, json=data)
             return render_template('admin/add_que.html')
         except Exception as e:
@@ -193,7 +186,7 @@ def edit(id):
     if session['logged_in']:
         try:
             data = {"id": id}
-            url = 'http://400f-14-99-145-110.ngrok.io/edit'
+            url = 'http://e386-14-99-145-110.ngrok.io/edit'
             response = requests.post(url=url, json=data)
             qa_list = response.json()
             data_list = qa_list.get('data')
@@ -221,7 +214,7 @@ def update():
                     "correct_opt": form1.correct_opt.data
 
                 }
-                url = 'http://400f-14-99-145-110.ngrok.io/update'
+                url = 'http://e386-14-99-145-110.ngrok.io/update'
                 response = requests.post(url=url, json=pay_load)
             return redirect('/view_all_que')
 
@@ -234,7 +227,7 @@ def update():
 def delete(id):
     if session['logged_in']:
         data = {"id": id}
-        response = requests.post(url='http://400f-14-99-145-110.ngrok.io/delete', json=data)
+        response = requests.post(url='http://e386-14-99-145-110.ngrok.io/delete', json=data)
 
         return redirect('/view_all_que')
     return redirect('/login')

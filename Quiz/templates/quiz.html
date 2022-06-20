@@ -15,19 +15,61 @@
 
 <!--    </script>-->
 <!--});-->
+    <style>
+span.a {
+  padding-left:5px;
+  padding-right:5px;
+  margin-bottom:50%;
+  margin-left:140%;
+  border: 3px solid black;
+}
+
+
+</style>
+    <script>
+    window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = '';
+});
+    var myTimer;
+    function clock() {
+    myTimer = setInterval(myClock, 1000);
+    var c = 601;
+
+    function myClock() {
+        --c
+
+        var seconds = c % 60;
+        var secondsInMinutes = (c - seconds) / 60;
+        var minutes = secondsInMinutes % 60;
+        document.getElementById('timer').innerHTML = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+        if (c == 0) {
+            clearInterval(myTimer);
+            alert(" Time out!! :( ");
+            document.getElementById('myForm').submit();
+
+        }
+    }
+}
+function submitForm(){
+    document.getElementByName("myForm").submit();
+    }
+
+    </script>
 </head>
-<body>
-<form method="post" action="/quiz_taken">
+<body oncopy="return false" oncut="return false" onpaste="return false" onload="clock()">
+<form method="post" action="/quiz_taken" name="myForm" id="myForm">
     <div class="scp-quizzes-main">
-        <div class="scp-quizzes-data">
+        <div  class="scp-quizzes-data">
+            <span class="a" id="timer"></span>
 
             {% for qa in qa_list%}
 
-                <div class = 'card' style=" width:70rem; margin-left:20px;">
+                <div class = 'card' style=" width:70rem; margin-left:20px;margin-top:10px;">
                     <div class = 'card-block' style="margin-left:20px;margin-top:10px;">
             <h4>{{loop.index}}{{". "+qa.question}}</h4>
             <br/>
-                    <input type="radio" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}" required>
+                    <input type="radio" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}">
                        <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
                     <input type="radio" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
                        <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
@@ -42,13 +84,14 @@
 
         </div>
         <div style="font-size: 30px; margin-top: 1.5rem;">
-            <input type="submit" class="btn btn-outline-secondary"
+            <input type="submit" id="submitButton" class="btn btn-outline-secondary"
                    style="width: 70rem; height: 2.5rem; font-size: 1rem;margin-left: 10px;">
         </div>
 
     </div>
     <br><br>
 </form>
+
 </body>
 {% endblock content %}
 </html>
