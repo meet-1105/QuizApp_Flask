@@ -34,7 +34,7 @@ class LoginForm(FlaskForm):
 
 class Add_queForm(FlaskForm):
     # id = IntegerField('id', validators=[DataRequired()])
-    sub_name = StringField('sub_name', validators=[DataRequired()])
+    subjects = StringField('subjects', validators=[DataRequired()])
     question = StringField('question', validators=[DataRequired()])
     option1 = StringField('option1', validators=[DataRequired()])
     option2 = StringField('option2', validators=[DataRequired()])

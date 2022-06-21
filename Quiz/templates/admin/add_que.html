@@ -13,7 +13,19 @@
 <form id="quickForm" action="" method="POST" style="height: 2.5rem; font-size: 1rem;left: 20px;">
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" name="sub_name" placeholder="Add subject" aria-label="Username" aria-describedby="basic-addon1" required>
+        <label for="subjects">Choose a Subject:</label>
+
+<select name="subjects" id="subjects">
+  <option value="Python">Python</option>
+  <option value="Java">Java</option>
+  <option value="Flask">Flask</option>
+  <option value="Django">Django</option>
+  <option value="CSS">CSS</option>
+
+  <option value="HTML">HTML</option>
+  <option value="JS">JS</option>
+</select>
+<!--        <input type="text" class="form-control" name="sub_name" placeholder="Add subject" aria-label="Username" aria-describedby="basic-addon1" required>-->
     </div>
     <div class="input-group mb-3">
         <input type="text" class="form-control" name="question" placeholder="Type Question.." aria-label="Username" aria-describedby="basic-addon1" required>

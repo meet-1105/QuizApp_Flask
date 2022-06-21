@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+<html>
+{%block content%}
+   <head>code
+      <title>  Quizzes </title>
+<!--                <link rel="stylesheet" type="text/css" href="./css/style.css" />-->
+
+   </head>
+{% block body %}
+   <body >
+<div >
+    <div>
+        <form method="POST" action="">
+          <label style="font-size:30px;"><b>Select Subject:</b></label><br>
+         <input type="checkbox" name="subjects" value="Python"> <label style="font-size:22px;">Python</label> <br>
+         <input  type="checkbox" name="subjects" value="Java"> <label style="font-size:22px;">Java</label> <br>
+         <input type="checkbox" name="subjects" value="HTML">  <label style="font-size:22px;">HTML</label> <br>
+         <input type="checkbox" name="subjects" value="Flask"> <label style="font-size:22px;">Flask</label> <br>
+          <input type="checkbox" name="subjects" value="Django"> <label style="font-size:22px;">Django</label> <br>
+          <input type="checkbox" name="subjects" value="CSS"> <label style="font-size:22px;">CSS</label> <br>
+          <input type="checkbox" name="subjects" value="JS"> <label style="font-size:22px;">JS</label> <br>
+
+              <input type="submit" class="btn btn-outline-dark" value="View Questions"  style="height:45px; width:150px;
+               border:2px solid black;">
+
+</form>
+</div>
+</div>
+</body>
+{% endblock %}
+{% endblock content %}
+</html>

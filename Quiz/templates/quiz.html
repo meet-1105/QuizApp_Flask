@@ -23,7 +23,9 @@ span.a {
   margin-left:140%;
   border: 3px solid black;
 }
+.val{
 
+}
 
 </style>
     <script>
@@ -31,6 +33,14 @@ span.a {
     e.preventDefault();
     e.returnValue = '';
 });
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener("visibilitychange", function(e) {
+
+            if (document.hidden){
+                alert("Tab Switched!!!");
+                document.getElementById('myForm').submit();
+            }
+        });
     var myTimer;
     function clock() {
     myTimer = setInterval(myClock, 1000);
@@ -51,13 +61,10 @@ span.a {
         }
     }
 }
-function submitForm(){
-    document.getElementByName("myForm").submit();
-    }
 
     </script>
 </head>
-<body oncopy="return false" oncut="return false" onpaste="return false" onload="clock()">
+<body onload="clock()" oncopy="return false" oncut="return false"  >
 <form method="post" action="/quiz_taken" name="myForm" id="myForm">
     <div class="scp-quizzes-main">
         <div  class="scp-quizzes-data">
@@ -73,9 +80,10 @@ function submitForm(){
                        <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
                     <input type="radio" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
                        <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
-                    <input type="radio" id="{{qa.options['option3']}}" name="question-{{qa.id}}"value="{{qa.get('options').get('option3')}}">
+                    <input type="radio" id="{{qa.options['option3']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option3')}}">
                        <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
                     <input type="radio" id="{{qa.options['option4']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
+                       <input type="hidden" name="question-{{qa.id}}"  value="--"/>
 
                      <label for="{{qa.options['option4']}}" > {{qa.options['option4']}}</label>
                     </div>
