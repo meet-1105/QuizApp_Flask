@@ -103,6 +103,7 @@ def quiz():
                 qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question,
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
+            print(qa_list[:10])
             response = {"status": "True", "message": "data stored successfully"}
             return {'response': response, 'data': qa_list[:10]}
 
