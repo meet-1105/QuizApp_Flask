@@ -16,8 +16,8 @@
 
 
                 <h6>{{loop.index}}{{". "+qa.question}}
-          <a href="/edit/{{ qa.id }}" class="btn btn-info"> Edit</a>
-                    <a href="/delete/{{ qa.id }}" class="btn btn-info"> Delete</a></h6>
+          <a href="/edit/{{ qa.id }}" class="btn btn-info" style="height:25px;width:50px;">EDIT</a>
+                    <a href="/delete/{{ qa.id }}" class="btn btn-info" style="height:25px;width:50px;">DELETE</a></h6>
     <br/>
            <label >A. {{qa.get('options').get('option1')}}</label><br/>
 
@@ -25,7 +25,7 @@
 
            <label>C.  {{qa.options["option3"]}}</label> <br/>
 
-         <label>D.  {{qa.options["option4"]}}</label><br/>
+            <label>D.  {{qa.options["option4"]}}</label><br/>
         <label>Correct Option: <u>{{qa.correct_opt}}</u></label>
           </div>
 </div>
