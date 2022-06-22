@@ -115,14 +115,25 @@ def quiz():
 def view_que():
     from models import QA
     try:
-        questions = QA.query.all()
+        # questions = QA.query.all()
+        #
+        # qa_list = []
+        # for qa in questions:
+        #     qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question, 'options': json.loads(qa.options),
+        #                'correct_opt': qa.correct_opt}
+        #     qa_list.append(qa_data)
+        # return jsonify({'status': True, 'data': qa_list})
+        data = request.get_json()
+        if data.get("data") is not None:
+            questions = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).all()
+            qa_list = []
+            for qa in questions:
+                qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question,
+                           'options': json.loads(qa.options), 'correct_opt': qa.correct_opt}
+                qa_list.append(qa_data)
+            return jsonify({'status': True, 'data': qa_list})
 
-        qa_list = []
-        for qa in questions:
-            qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question, 'options': json.loads(qa.options),
-                       'correct_opt': qa.correct_opt}
-            qa_list.append(qa_data)
-        return jsonify({'status': True, 'data': qa_list})
+
 
     except Exception as e:
         return {"error": e}
@@ -288,6 +299,27 @@ def result():
         user_result = json.loads(user1.user_result)
 
         return {"response": user_result}
+
+    except Exception as e:
+        return {"error": e}
+
+
+@app.route('/admin_result', methods=['POST', 'GET'])
+def admin_result():
+    try:
+        from models import User
+        user = User.query.all()
+
+        qa_list = {}
+        for qa in user:
+            if qa.user_result not in [None, ""]:
+
+                qa_list[qa.username] = eval(qa.user_result)
+
+            else:
+                pass
+
+        return jsonify(qa_list)
 
     except Exception as e:
         return {"error": e}
