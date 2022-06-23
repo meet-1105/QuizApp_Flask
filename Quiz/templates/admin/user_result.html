@@ -1,6 +1,7 @@
 {% extends "admin/base.html" %}
 {% block content %}
 
+
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -25,6 +26,10 @@
             tab16 { padding-left: 64em; }
 
 
+
+
+
+
     </style>
 
 
@@ -34,44 +39,49 @@
 <br><br>
 <center>
     <h2 class="panel-title">
-        <tab3>User's Quiz History</tab3>
+        <tab3>User's History</tab3>
     </h2>
 </center>
 <br>
 
 <div>
+    <div>
+        {% for i in user_name %}
+        <button type="button" class="collapsible">
+            USER_NAME: <b>{{i}}</b><br>
+        </button>
+        <div class="content">
+            <div class="p-1">
 
-    {% for i in data["response"] %}
-    <button type="button" class="collapsible">username</button>
-    <div class="content">
-        <div class="p-1">
-            <button type="button" class="collapsible">Quiz {{loop.index}}
-                <tab14>Score: {{i["score"]}}</tab14>
-            </button>
+                {% for x in data[i] %}
+                <button type="button" class="collapsible">Quiz {{loop.index}}
+                    <tab14>Score: {{x["score"]}}</tab14>
+                </button>
+                <div class="content">
+                    <div class="p-1">
+                        {%for y in x%}
+                        <div class="card mb-2">
+                            {% if not y == 'score' %}
 
-            <div class="content">
-                <div class="p-1">
-
-
-                    {% for x in i %}
-                    <div class="card mb-2">
-                        {% if not x == 'score' %}
-
-                        <label>&emsp;<b>Question:</b> {{i[x]["question"]}}</label>
-                        <label>&emsp;<b>Selected option:</b> {{i[x]["selected_option"]}}</label>
-                        <label>&emsp;<b>Correct option:</b> {{i[x]["correct_opt"]}}</label>
-                        {% else %}
-                        {{pass}}
-                        {% endif %}
+                            <label>&emsp;<b>Question:</b> {{x[y]["question"]}}</label>
+                            <label>&emsp;<b>Selected option:</b> {{x[y]["selected_option"]}}</label>
+                            <label>&emsp;<b>Correct option:</b> {{x[y]["correct_opt"]}}</label>
+                            {% else %}
+                            {{pass}}
+                            {% endif %}
+                        </div>
+                        {%endfor%}
                     </div>
-                    {% endfor%}
-
                 </div>
+                {% endfor%}
+
             </div>
-                    {% endfor %}
         </div>
+        {% endfor %}
+
     </div>
 </div>
+
 
 <script>
 var coll = document.getElementsByClassName("collapsible");
@@ -89,7 +99,11 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
+
+
+
+
 </script>
 </body>
-{% endblock %}
+{%endblock%}
 {% endblock content %}

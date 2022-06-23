@@ -1,8 +1,3 @@
-body {
-  background: #fafafa;
-  color: #333333;
-  margin-top: 5rem;
-}
 .bckgrnd{
 background-image: linear-gradient( 174.2deg,  rgba(255,244,228,1) 7.1%, rgba(240,246,238,1) 67.4% );
 }
@@ -12,7 +7,8 @@ background-image: radial-gradient( circle 801px at 10.1% 20.1%,  rgba(209,234,20
 }
 .bgimg {
   background-image: url('static/quizbgimg.jpg');
-}.input[type="text"]
+}
+.input[type="text"]
 {
     font-size:20px;
 }
@@ -93,4 +89,111 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+/*quiz css */
+
+body {
+  background-image: url('static/img/allbg.webp');
+  background-size: 100%;
+}
+
+   .next_btn:hover {
+            color: white;
+            background-color: green;
+        }
+
+   .prev_btn:hover {
+            color: white;
+            background-color: green;
+        }
+    .card {
+  display: none;
+  }
+  }
+.row {
+  display: flex;
+  padding:20px;
+}
+
+.left_div {
+    flex: 1000px;
+    padding: 40px;
+    height: 302px
+}
+.right_div{
+       flex: 84px;
+    height: 400px;
+}
+.button_div{
+  flex: 70%;
+  padding: 40px;
+  height: 200px;
+}
+.prev_btn{
+    margin-top: 20px;
+    width: 125px;
+    height: 50px;
+    border: 1px solid;
+    border-radius: 60px;
+}
+.submit_btn{
+  position: fixed;
+  left: 30%;
+  top:50%;
+  margin-top: 150px;
+    width: 20%;
+    height: 60px;
+    border: 1px solid;
+    border-radius: 48px;
+
+}
+.next_btn{
+float:right;
+margin-top: 20px;
+    width: 125px;
+    height: 50px;
+    border: 1px solid;
+    border-radius: 60px;
+}
+}
+
+.container1{
+margin-top:30%;
+}
+.count-name{
+    margin-left: 40px;
+    position: relative;
+    margin-top: 100px;
+}
+
+span.a {
+  padding-left:10px;
+  padding-right:10px;
+  margin-bottom:50%;
+  margin-left:140%;
+  border: 3px solid black;
+}
+.timer{
+    margin-top: 125px;
+    margin-left: 1004px;
+    position: absolute;
+    border: 1px solid;
+    width: 130px;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 15px;
+}
+
+.collapsible {
+  color: white;
+  cursor: pointer;
+  padding: 20px;
+  width: 150%;
+  background-color: #777;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  margin-bottom:16px;
 }
