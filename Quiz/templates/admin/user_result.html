@@ -3,35 +3,8 @@
 
 
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <style type="text/css">
-            dummydeclaration { padding-left: 4em; } /* Firefox ignores first declaration for some reason */
-            tab1 { padding-left: 4em; }
-            tab2 { padding-left: 8em; }
-            tab3 { padding-left: 12em; }
-            tab4 { padding-left: 16em; }
-            tab5 { padding-left: 20em; }
-            tab6 { padding-left: 24em; }
-            tab7 { padding-left: 28em; }
-            tab8 { padding-left: 32em; }
-            tab9 { padding-left: 36em; }
-            tab10 { padding-left: 40em; }
-            tab11 { padding-left: 44em; }
-            tab12 { padding-left: 48em; }
-            tab13 { padding-left: 52em; }
-            tab14 { padding-left: 56em; }
-            tab15 { padding-left: 60em; }
-            tab16 { padding-left: 64em; }
-
-
-
-
-
-
-    </style>
-
 
 </head>
 <body>
@@ -47,17 +20,45 @@
 <div>
     <div>
         {% for i in user_name %}
-        <button type="button" class="collapsible">
-            USER_NAME: <b>{{i}}</b><br>
+        <button type="button" class="collapsible" style="color: white;
+          cursor: pointer;
+          padding: 20px;
+          width: 100%;
+          background-color: #777;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          margin-bottom:16px;">
+            <b>USER_NAME: {{i}}</b><br>
         </button>
-        <div class="content">
+        <div class="content" style="padding: 0 20px;
+          display: none;
+           width: 100%;
+
+          overflow: hidden;
+          background-color: #f1f1f1;">
             <div class="p-1">
 
                 {% for x in data[i] %}
-                <button type="button" class="collapsible">Quiz {{loop.index}}
+                <button type="button" class="collapsible" style="color: white;
+          cursor: pointer;
+          padding: 20px;
+          width: 100%;
+          background-color: #777;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          margin-bottom:16px;">Quiz {{loop.index}}
                     <tab14>Score: {{x["score"]}}</tab14>
                 </button>
-                <div class="content">
+                <div class="content" style="padding: 0 20px;
+          display: none;
+           width: 100%;
+
+          overflow: hidden;
+          background-color: #f1f1f1;">
                     <div class="p-1">
                         {%for y in x%}
                         <div class="card mb-2">
@@ -98,6 +99,8 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
+
+
 
 
 

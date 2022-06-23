@@ -71,9 +71,13 @@ body {
   margin-top: 150px;
     width: 20%;
     height: 60px;
-    border: 1px solid;
     border-radius: 48px;
+    border:2px solid black;
 
+}
+.submit_btn:hover {
+  background-color: #555555;
+  color: white;
 }
 .next_btn{
 float:right;
@@ -156,7 +160,7 @@ span.a {
                     <div class = 'card-block' style="padding:10px;">
             <h4>{{loop.index}}{{". "+qa.question}}</h4>
             <br/>
-                    <input type="radio" index="{{loop.index}}" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}" required>
+                    <input type="radio" index="{{loop.index}}" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}">
                        <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
                     <input type="radio" index="{{loop.index}}" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
                        <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
@@ -170,12 +174,13 @@ span.a {
                     </div>
                     </div>
             {% endfor%}
-            </form>
+
                             <button class="prev_btn" type="button"  id="prevBtn" onclick="nextPrev(-1)">Previous</button>
 
                             <button class="next_btn" type="button"  id="nextBtn" onclick="nextPrev(1)">Next</button>
                             <button class="submit_btn" type="submit" id="submit-btn" >Submit Quiz</button>
 
+</form>
 
         </div3>
         <div4  id="pagination" class="right_div">
@@ -210,7 +215,7 @@ for (let index = 0; index < arr.length; index++) {
 
 
 $(".card").click(function(){
-  $('.page')[$(this).find('input[type="radio"]:checked').attr('index')-1].classList.add('btn-danger')
+  $('.page')[$(this).find('input[type="radio"]:checked').attr('index')-1].classList.add('btn-success')
 })
 
 
