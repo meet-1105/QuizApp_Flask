@@ -1,0 +1,32 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}UPDATE QUESTION{% endblock %}
+
+{% block body %}
+
+<h1>UPDATE Question</h1>
+<form method="post" action="/update" >
+    {% for qa in qa_data %}
+        <label>Id:</label>
+        <input type="text"  name="id" value="{{ qa.id }}"><br>
+        <label>Question:</label>
+    <textarea  name="question" rows="2" cols="30">{{ qa.question }}</textarea><br>
+    <label>Subject:</label>
+        <input type="text"  name="subject" value="{{ qa.sub_name }}"><br>
+            <label>A:</label>
+        <input type="text"  name="option1" value="{{qa.options['option1']}}"><br>
+            <label>B:</label>
+        <input type="text"  name="option2" value="{{qa.options['option2']}}"><br>
+            <label>C:</label>
+        <input type="text"  name="option3" value="{{qa.options['option3']}}"><br>
+            <label>D:</label>
+        <input type="text"  name="option4" value="{{qa.options['option4']}}"><br>
+            <label>Correct Option:</label>
+        <input type="text"  name="correct_opt" value="{{qa.correct_opt}}"><br>
+
+        <br><br>
+
+    {% endfor %}
+<input type="submit" value="Submit"><br><br>
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<body>
+<h3>Question 1 of 5:</h3>
+<form method="post" action="/quiz_taken">
+    <div class="scp-quizzes-main">
+        <div class="scp-quizzes-data">
+
+            {% for qa in qa_list%}
+
+                <div class = 'card' style=" width:70rem; margin-left:20px;">
+                    <div class = 'card-block' style="margin-left:20px;margin-top:10px;">
+            <h4>{{loop.index}}{{". "+qa.question}}</h4>
+            <br/>
+                    <input type="radio" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}" required>
+                       <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
+                    <input type="radio" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
+                       <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
+                    <input type="radio" id="{{qa.options['option3']}}" name="question-{{qa.id}}"value="{{qa.get('options').get('option3')}}">
+                       <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
+                    <input type="radio" id="{{qa.options['option4']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
+
+                     <label for="{{qa.options['option4']}}" > {{qa.options['option4']}}</label>
+                    </div>
+                    </div>
+            {% endfor%}
+
+<button id="previous">Previous Question</button>
+<button id="next">Next Question</button>
+<button id="submit">Submit Quiz</button>
+
+</body>
+</html>

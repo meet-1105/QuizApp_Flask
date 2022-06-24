@@ -1,0 +1,164 @@
+{% extends "layout1.html" %}
+<html>
+{%block content%}
+<head>
+    <title>Quizzes </title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<style>
+    .select {
+            background-color: rgb(179, 179, 179);
+        }
+        .select:hover {
+            color: white;
+            background-color: green;
+        }
+    .card {
+  display: none;
+  }
+  }
+</style>
+
+</head>
+<body>
+<form method="post" id="quiz-form" action="/quiz_taken">
+    <div class="scp-quizzes-main">
+        <h4 id="count"></h4>
+        <div class="scp-quizzes-data">
+
+            {% for qa in qa_list%}
+
+                <div class = 'card ' style=" width:70rem; margin-left:20px;">
+                    <div class = 'card-block' style="margin-left:20px; margin-top:10px;">
+            <h4>{{loop.index}}{{". "+qa.question}}</h4>
+            <br/>
+                    <input type="radio" index="{{loop.index}}" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}" required>
+                       <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
+                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
+                       <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
+                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option3']}}" name="question-{{qa.id}}"value="{{qa.get('options').get('option3')}}">
+                       <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
+                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option4']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
+
+                     <label for="{{qa.options['option4']}}" > {{qa.options['option4']}}</label>
+                    </div>
+                    </div>
+            {% endfor%}
+            <div>
+                  <button type="button" class="select"  id="prevBtn" onclick="nextPrev(-1)"style="margin-left:30px;">Previous</button>
+                  <button type="button" class="select"   id="nextBtn" onclick="nextPrev(1)"style="margin-left:149%;">Next</button>
+                  <button type="submit" class="select" id="submit-btn" style="margin-left:70%;margin-top:40px;">Submit Quiz</button>
+                </div>
+        <div id="pagination" class="border"></div>
+
+    </div>
+</form>
+</body>
+
+<script>
+
+var checked = document.querySelectorAll('input[type="radio"]:checked');
+
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+var arr = document.getElementsByClassName('card')
+
+for (let index = 0; index < arr.length; index++) {
+    const element = arr[index];
+    var page = document.createElement('button')
+    page.innerText = index + 1
+    page.className = 'page btn btn-success border'
+    document.getElementById('pagination').append(page)
+
+}
+
+
+$(".card").click(function(){
+  $('.page')[$(this).find('input[type="radio"]:checked').attr('index')-1].classList.add('btn-danger')
+})
+
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("card");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+
+    document.getElementById("nextBtn").style.display='none'
+    document.getElementById('submit-btn').style.display='block'
+    document.getElementById('submit-btn').addEventListener('click',function(){
+        document.getElementById('quiz-form').submit()
+    })
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+  }
+  document.getElementById('count').innerText=` ${n + 1} out of ${x.length} `
+  //... and run a function that will display the correct step indicator:
+//   fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("card");
+  // Exit the function if any field in the current tab is invalid:
+//   if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  console.log(currentTab)
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
+
+
+$('.page').click(function(){
+    for (let index = 0; index < $('.page').length; index++) {
+
+        if(index == $(this).text()-1){
+            $('.card')[index].style.display='block'
+            $("#count").text(`${index+1} out of ${$('.page').length}`)
+
+          }
+        else{
+            $('.card')[index].style.display='none'
+        }
+
+    }
+})
+
+
+
+</script
+>
+
+{% endblock content %}
+</html>
+

@@ -1,0 +1,64 @@
+{%extends 'layout1.html'%}
+{% block content %}
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<body>
+<br><br>
+<center><h2 class="panel-title"></h2></center>
+<div class="container" wid>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+
+    </div>
+    <table class="table table-hover" id="dev-table" border="2">
+    <thead bgcolor="003366"  style="color:white">
+        <tr>
+          <th>Sr. No</th>
+          <th><center>Question</center></th>
+          <th>Selected Option</th>
+  <th>Correct Answer</th>
+            <th>Score</th>
+        </tr>
+      </thead>
+
+          {% for i in data["response"] %}
+            {% for x in i %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{i[x]["question"]}}</td>
+                    <td>{{i[x]["selected_option"]}}</td>
+                    <td>{{i[x]["correct_opt"]}}</td>
+                    <td>{{i["score"]}}</td>
+                </tr>
+            {% endfor %}
+          {% endfor %}
+
+
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+<br><br><br><br><br><br>
+</body>
+{% endblock content %}

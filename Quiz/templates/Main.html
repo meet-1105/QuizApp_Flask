@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% if title %}
+        <title>QUIZ - {{ title }}</title>
+    {% else %}
+        <title>QUIZ</title>
+    {% endif %}
+    <meta charset="UTF-8">
+    <title>mainfile</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" type="text/css" />
+
+  <style type="text/css">
+		.site-link{
+      padding: 5px 15px;
+			position: fixed;
+			z-index: 99999;
+			background: #fff;
+			box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+			right: 30px;
+			bottom: 30px;
+			border-radius: 10px;
+		}
+		.site-link img{
+			width: 30px;
+			height: 30px;
+		}
+	</style>
+		<script  src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function(){
+			$(".veen .rgstr-btn button").click(function(){
+				$('.veen .wrapper').addClass('move');
+				$('.body').css('background','#000000');
+				$(".veen .login-btn button").removeClass('active');
+				$(this).addClass('active');
+
+			});
+			$(".veen .login-btn button").click(function(){
+				$('.veen .wrapper').removeClass('move');
+				$('.body').css('background','#00000');
+				$(".veen .rgstr-btn button").removeClass('active');
+				$(this).addClass('active');
+			});
+		});
+</script>
+</head>
+<body >
+<div class="body">
+		<div class="veen">
+			<div class="login-btn splits">
+				<p>Already an user?</p>
+				<button class="active">Login</button>
+			</div>
+			<div class="rgstr-btn splits">
+				<p>Don't have an account?</p>
+				<button>Register</button>
+			</div>
+			<div class="wrapper">
+
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+				<form id="login" action="/login" method="POST" tabindex="500">
+					<h3>Login For Quiz</h3>
+					<div class="mail">
+						<input type="mail" name="email" required>
+						<label>Mail</label>
+					</div>
+					<div class="passwd">
+						<input type="password" name="password" required>
+						<label>Password</label>
+					</div>
+					<div class="submit">
+						<button class="dark">Login</button>
+					</div>
+				</form>
+				<form id="register" action="/register" method="post" tabindex="502">
+					<h3>Register</h3>
+					<div class="uid">
+						<input type="text" name="username" required>
+						<label>Name</label>
+					</div>
+					<div class="mail">
+						<input type="mail" name="email" required>
+						<label>Mail</label>
+					</div>
+					<div class="passwd">
+						<input type="password" name="password" required>
+						<label>Password</label>
+					</div>
+					<div class="uid">
+						<input type="text" name="contact_no" required>
+						<label>Contact No.</label>
+					</div>
+					<div class="submit">
+						<button class="dark">Register</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

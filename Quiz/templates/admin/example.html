@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Button Fun</title>
+    <script src = 'bower_components/jquery/dist/jquery.js'></script>
+    <script type="home.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <script type="text/javascript">
+    clicked = true;
+    $(document).ready(function(){
+        $("button").click(function(){
+            if(clicked){
+                $(this).css('background-color', 'red');
+                clicked  = false;
+            } else {
+                $(this).css('background-color', 'blue');
+                clicked  = true;
+            }
+        });
+    });
+</script>
+</head>
+<body>
+
+    <button>Press</button>
+
+</body>
+</html>
