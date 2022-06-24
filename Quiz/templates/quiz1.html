@@ -4,22 +4,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href=" {{url_for('static', filename='main.css') }}">
 
     {% if title %}
-        <title>QUIZ - {{ title }}</title>
+    <title>QUIZ - {{ title }}</title>
     {% else %}
-        <title>QUIZ</title>
+    <title>QUIZ</title>
     {% endif %}
 
     <title>Quizzes </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">-->
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-<style>
+
+    <style>
 body {
   background-image: url('static/img/allbg.webp');
   background-size: 100%;
@@ -69,10 +72,10 @@ body {
   left: 30%;
   top:50%;
   margin-top: 150px;
-    width: 20%;
-    height: 60px;
-    border-radius: 48px;
-    border:2px solid black;
+  width: 20%;
+  height: 60px;
+  border-radius: 48px;
+  border:2px solid black;
 
 }
 .submit_btn:hover {
@@ -115,76 +118,83 @@ span.a {
     font-size: 30px;
     border-radius: 15px;
 }
-</style>
 
+
+    </style>
+    <script src="http://sibeeshpassion.com/content/scripts/jquery-1.11.1.min.js"></script>
 </head>
-<body onload="clock()" oncopy="return false" oncut="return false"  >
+<body onload="clock()" oncopy="return false" oncut="return false">
 <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{{ url_for('home') }}">QUIZ </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-        &nbsp&nbsp   <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
-                &nbsp&nbsp<a class="nav-item nav-link" href="{{ url_for('quiz_history')}}">Quiz History</a>
+            <a class="navbar-brand mr-4" href="{{ url_for('home') }}">QUIZ </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                    &nbsp&nbsp <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+                    &nbsp&nbsp<a class="nav-item nav-link" href="{{ url_for('quiz_history') }}">Quiz History</a>
 
 
+                </div>
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link">{{username}}</a>
+
+                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+
+                </div>
             </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-                <a class="nav-item nav-link">{{username}}</a>
-
-                  <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
-
-            </div>
-          </div>
         </div>
-      </nav>
-    </header>
-<div1  class="container1">
-                <div class="timer" id="timer"></div>
+    </nav>
+</header>
+<div1 class="container1">
+    <div class="timer" id="timer"></div>
 
     <div2 class="row">
 
-           <h4  class="count-name" id="count"style="margin-left:40px;"></h4>
+        <h4 class="count-name" id="count" style="margin-left:40px;"></h4>
 
         <div3 class="left_div">
-            <form method="post" id="quiz-form" action="/quiz_taken"name="myForm" >
+            <form method="post" id="quiz-form" action="/quiz_taken" name="myForm">
 
-            {% for qa in qa_list%}
+                {% for qa in qa_list%}
 
-                <div class = 'card '>
-                    <div class = 'card-block' style="padding:10px;">
-            <h4>{{loop.index}}{{". "+qa.question}}</h4>
-            <br/>
-                    <input type="radio" index="{{loop.index}}" id="{{qa.get('options').get('option1')}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}">
-                       <label for="{{qa.get('options').get('option1')}}"> {{qa.get('options').get('option1')}}</label><br/>
-                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option2']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
-                       <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
-                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option3']}}" name="question-{{qa.id}}"value="{{qa.get('options').get('option3')}}">
-                       <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
-                    <input type="radio" index="{{loop.index}}" id="{{qa.options['option4']}}" name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
+                <div class='card '>
+                    <div class='card-block' style="padding:10px;">
+                        <h4>{{loop.index}}{{". "+qa.question}}</h4>
+                        <br/>
+                        <input type="radio" index="{{loop.index}}" id="{{qa.get('options').get('option1')}}"
+                               name="question-{{qa.id}}" value="{{qa.get('options').get('option1')}}">
+                        <label for="{{qa.get('options').get('option1')}}">
+                            {{qa.get('options').get('option1')}}</label><br/>
+                        <input type="radio" index="{{loop.index}}" id="{{qa.options['option2']}}"
+                               name="question-{{qa.id}}" value="{{qa.get('options').get('option2')}}">
+                        <label for="{{qa.options['option2']}}"> {{qa.options['option2']}}</label><br/>
+                        <input type="radio" index="{{loop.index}}" id="{{qa.options['option3']}}"
+                               name="question-{{qa.id}}" value="{{qa.get('options').get('option3')}}">
+                        <label for="{{qa.options['option3']}}"> {{qa.options['option3']}}</label> <br/>
+                        <input type="radio" index="{{loop.index}}" id="{{qa.options['option4']}}"
+                               name="question-{{qa.id}}" value="{{qa.get('options').get('option4')}}">
 
-                     <label for="{{qa.options['option4']}}" > {{qa.options['option4']}}</label>
-                        <input type="hidden" name="question-{{qa.id}}"  value="--"/>
+                        <label for="{{qa.options['option4']}}"> {{qa.options['option4']}}</label>
+                        <input type="hidden" name="question-{{qa.id}}" value="--"/>
 
                     </div>
-                    </div>
-            {% endfor%}
+                </div>
+                {% endfor%}
 
-                            <button class="prev_btn" type="button"  id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button class="prev_btn" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
 
-                            <button class="next_btn" type="button"  id="nextBtn" onclick="nextPrev(1)">Next</button>
-                            <button class="submit_btn" type="submit" id="submit-btn" >Submit Quiz</button>
+                <button class="next_btn" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                <button class="submit_btn" type="submit" id="submit-btn">Submit Quiz</button>
 
-</form>
+            </form>
 
         </div3>
-        <div4  id="pagination" class="right_div">
-
+        <div4 id="pagination" class="right_div">
 
 
         </div4>
@@ -196,7 +206,6 @@ span.a {
 </body>
 
 <script>
-
 var checked = document.querySelectorAll('input[type="radio"]:checked');
 
 var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -208,14 +217,19 @@ for (let index = 0; index < arr.length; index++) {
     const element = arr[index];
     var page = document.createElement('button')
     page.innerText = index + 1
-    page.className = 'page btn btn-success border'
+    page.setAttribute('id',index);
+    if(index == 0){
+    page.className = 'page btn btn-default border btn-dark'
+    } else {
+    page.className = 'page btn btn-default border'
+    }
+
     document.getElementById('pagination').append(page)
 
 }
-
-
 $(".card").click(function(){
   $('.page')[$(this).find('input[type="radio"]:checked').attr('index')-1].classList.add('btn-success')
+
 })
 
 
@@ -237,7 +251,8 @@ function showTab(n) {
         document.getElementById('quiz-form').submit()
     })
   } else {
-    document.getElementById("nextBtn").innerHTML = "Next";
+    document.getElementById("nextBtn").style.display = "inline";
+
   }
   document.getElementById('count').innerText=` ${n + 1} out of ${x.length} `
   //... and run a function that will display the correct step indicator:
@@ -252,8 +267,9 @@ function nextPrev(n) {
   // Hide the current tab:
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
+  document.getElementById(currentTab).classList.remove("btn-dark")
   currentTab = currentTab + n;
-  console.log(currentTab)
+  document.getElementById(currentTab).classList.add("btn-dark")
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
@@ -261,44 +277,88 @@ function nextPrev(n) {
     return false;
   }
   // Otherwise, display the correct tab:
+
   showTab(currentTab);
 }
-
-
-function fixStepIndicator(n) {
-  // This function removes the "active" class of all steps...
-  var i, x = document.getElementsByClassName("step");
-  for (i = 0; i < x.length; i++) {
-    x[i].className = x[i].className.replace(" active", "");
-  }
-  //... and adds the "active" class on the current step:
-  x[n].className += " active";
-}
-
-
 $('.page').click(function(){
     for (let index = 0; index < $('.page').length; index++) {
 
         if(index == $(this).text()-1){
             $('.card')[index].style.display='block'
+            document.getElementById(currentTab).classList.remove("btn-dark")
+            currentTab=index
+            console.log("currentTab"+currentTab);
+            document.getElementById(currentTab).classList.add("btn-dark")
             $("#count").text(`${index+1} out of ${$('.page').length}`)
-
-          }
+                }
         else{
             $('.card')[index].style.display='none'
         }
+         if (currentTab==9){
+            document.getElementById("nextBtn").style.display="none";
 
+        }
+        else{
+            document.getElementById("nextBtn").style.display="inline";
+
+        }
     }
+
+
+
+
 })
 
 <!--khushboo's script-->
 
 
- window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = '';
+
+document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey) {
+        event.preventDefault();
+    }
 });
+
+
+document.onkeypress = function (event) {
+event = (event || window.event);
+if (event.keyCode == 123) {
+return false;
+}
+}
+document.onmousedown = function (event) {
+event = (event || window.event);
+if (event.keyCode == 123) {
+return false;
+}
+}
+document.onkeydown = function (event) {
+event = (event || window.event);
+if (event.keyCode == 123) {
+return false;
+}
+}
+
+
+<!-- for disabling back button -->
+ function disableBack() { window.history.forward(); }
+
+        setTimeout("disableBack()", 0);
+
+        window.onunload = function () { null };
+
+
+<!-- window.addEventListener('beforeunload', function (e) {-->
+<!--    e.preventDefault();-->
+<!--    e.returnValue = '';-->
+<!--});-->
+
+<!--for disabling the right click-->
+
         document.addEventListener('contextmenu', event => event.preventDefault());
+
+<!-- for tab change-->
+
         document.addEventListener("visibilitychange", function(e) {
 
             if (document.hidden){
@@ -306,6 +366,9 @@ $('.page').click(function(){
                 document.getElementById('quiz-form').submit();
             }
         });
+
+<!--        for timer-->
+
     var myTimer;
     function clock() {
     myTimer = setInterval(myClock, 1000);
@@ -318,6 +381,9 @@ $('.page').click(function(){
         var secondsInMinutes = (c - seconds) / 60;
         var minutes = secondsInMinutes % 60;
         document.getElementById('timer').innerHTML = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+        if (c == 120){
+        alert("only 2 minutes left!!!!");
+        }
         if (c == 0) {
             clearInterval(myTimer);
             alert(" Time out!! :( ");
@@ -326,6 +392,7 @@ $('.page').click(function(){
         }
     }
 }
+
 
 </script>
 
