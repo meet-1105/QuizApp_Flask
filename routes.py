@@ -92,7 +92,7 @@ def quiz():
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
             response = {"status": "True", "message": "data stored successfully"}
-            return jsonify({'response': response, "data": qa_list[:10]})
+            return jsonify({'response': response, "data": qa_list[:20]})
 
         else:
 
@@ -115,14 +115,6 @@ def quiz():
 def view_que():
     from models import QA
     try:
-        # questions = QA.query.all()
-        #
-        # qa_list = []
-        # for qa in questions:
-        #     qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question, 'options': json.loads(qa.options),
-        #                'correct_opt': qa.correct_opt}
-        #     qa_list.append(qa_data)
-        # return jsonify({'status': True, 'data': qa_list})
         data = request.get_json()
         if data.get("data") is not None:
             questions = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).all()
@@ -132,8 +124,6 @@ def view_que():
                            'options': json.loads(qa.options), 'correct_opt': qa.correct_opt}
                 qa_list.append(qa_data)
             return jsonify({'status': True, 'data': qa_list})
-
-
 
     except Exception as e:
         return {"error": e}
@@ -241,10 +231,6 @@ def taken_quiz():
             data = request.get_json()
             question1 = db.session.query(QA).filter(QA.id.in_(data.keys())).all()
             main_dict = {x.id: {'question': x.question, 'correct_opt': x.correct_opt} for x in question1}
-            # user_result = {
-            #     "question": data.get('questions'),
-            #     "select_option": data.get('selected_options')
-            # }
             count = 0
             for key1, value1 in data.items():
                 for key, value in redis_corr.items():
@@ -258,8 +244,6 @@ def taken_quiz():
                 questions.append(key)
                 sel_opt.append(value)
 
-            # questions = data.keys()
-            # sel_opt = data.values()
             for q in questions:
                 main_dict[int(q)].update({
                     'selected_option': sel_opt[questions.index(q)]
@@ -293,6 +277,7 @@ def result():
     try:
         from models import User
         redis_id = int(redis_cli.get('id'))
+        print(redis_id)
         user1 = User.query.filter_by(id=redis_id).first()
         if user1.user_result in [None, ""]:
             return jsonify({"response": "No Quiz Taken Yet"})
@@ -309,11 +294,9 @@ def admin_result():
     try:
         from models import User
         user = User.query.all()
-
         qa_list = {}
         for qa in user:
             if qa.user_result not in [None, ""]:
-
                 qa_list[qa.username] = eval(qa.user_result)
 
             else:
