@@ -18,8 +18,9 @@
 
 <style>
 body {
-  background-image: url('static/img/backgroungimg.jpg');
   background-size: 100%;
+  background-repeat: no-repeat;
+
 
 }
 .bg-steel {
@@ -42,11 +43,11 @@ body {
 
 </head>
 
-<body class="bckgrnd">
+<body class="bckgrnd" background="static/img/123.jpg">
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{{ url_for('quiz') }}">QUIZ </a>
+          <a class="navbar-brand mr-4" href="{{ url_for('home') }}">QUIZ </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -71,14 +72,20 @@ body {
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
+                    <div></div>
               <div>
 
               </div>
-          <div style="font-size: 35px; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+          <div style="font-size: 35px ; margin-top:30px; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
                   <br> Welcome Back, {{username}}!!<br><br></div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+            <div>
+                  <h4 style="color:red; width:280px;">{{ message }}</h4></div><br><br>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
       <form method="POST" action="">
           <label style="font-size:25px;"><b>Select Subject:</b></label><br>
          <input type="checkbox" name="subjects" value="Python"> <label style="font-size:22px;">Python</label> <br>

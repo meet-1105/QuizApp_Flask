@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>{% extends "admin/base.html" %}
+{% block content %}
+
+
+<head>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+<body>
+{% block body%}
+<br><br>
+<center>
+    <h2 class="panel-title">
+        <tab3>User's History</tab3>
+    </h2>
+</center>
+<br>
+
+<div>
+    <div>
+        {% for i in user_name %}
+        <button type="button" class="collapsible" style="color: white;
+          cursor: pointer;
+          padding: 20px;
+          width: 100%;
+          background-color: #777;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          margin-bottom:16px;">
+            <b>User_Name : {{i}}</b><br>
+        </button>
+        <div class="content" style="padding: 0 20px;
+          display: none;
+           width: 100%;
+
+          overflow: hidden;
+          background-color: #f1f1f1;">
+            <div class="p-1">
+
+                {% for x in data[i] %}
+                <button type="button" class="collapsible" style="color: white;
+          cursor: pointer;
+          padding: 20px;
+          width: 100%;
+          background-color: #777;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          margin-bottom:16px;">Quiz {{loop.index}}
+                    <tab14>Score: {{x["score"]}}</tab14>
+                </button>
+                <div class="content" style="padding: 0 20px;
+          display: none;
+           width: 100%;
+
+          overflow: hidden;
+          background-color: #f1f1f1;">
+                    <div class="p-1">
+                        {%for y in x%}
+                        <div class="card mb-2">
+                            {% if not y == 'score' %}
+
+                            <label>&emsp;<b>Question:</b> {{x[y]["question"]}}</label>
+                            <label>&emsp;<b>Selected option:</b> {{x[y]["selected_option"]}}</label>
+                            <label>&emsp;<b>Correct option:</b> {{x[y]["correct_opt"]}}</label>
+                            {% else %}
+                            {{pass}}
+                            {% endif %}
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                {% endfor%}
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
+
+
+
+
+
+
+</script>
+</body>
+{%endblock%}
+{% endblock content %}
