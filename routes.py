@@ -1,16 +1,16 @@
 import json
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask_bcrypt import Bcrypt
-from flask_redis import FlaskRedis
+from flask_redis import Redis
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ghjrhhrohirorthrtohi'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://ankita:12345678@192.168.1.47/quizapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-redis_cli = FlaskRedis(app)
+redis_cli = Redis(app)
 bcrypt = Bcrypt(app)
 
 
@@ -52,17 +52,18 @@ def login():
         if request.method == "POST":
             data = request.get_json()
             print(data)
-
             email = data.get('email')
             user = User.query.filter_by(email=email).first()
             if user and bcrypt.check_password_hash(user.password, data.get('password')):
-                from models import QA
-                questions = QA.query.all()
-                correct_options = json.dumps([x.correct_opt for x in questions])
-                redis_cli.set('correct_opt', correct_options)
                 import codecs
+                from models import QA
+                ques = QA.query.all()
+                correct_options = json.dumps({x.id: x.correct_opt for x in ques})
+                print("correct_option", correct_options)
+                redis_cli.set('correct_opt', correct_options)
                 redis_cli.set('id', user.id)
                 redis_cli.set('username', user.username)
+                print("redis get", redis_cli.get('correct_opt'))
                 redis_un = codecs.decode(redis_cli.get('username'), 'UTF-8')
                 return_response = {"status": "True", "message": "Logged in successfully", "flag": "1",
                                    "username": redis_un}
@@ -76,12 +77,50 @@ def login():
     return return_response
 
 
+@app.route('/user_profile', methods=['GET', 'POST'])
+def user_profile():
+    response = {"status": "False", "message": "Error occurred"}
+    try:
+        from models import User
+        redis_id = int(redis_cli.get('id'))
+        print("id", redis_id)
+        user_detail = User.query.filter_by(id=redis_id).first()
+        user_details = {"username": user_detail.username, "password": user_detail.password,
+                        "contact_no": user_detail.contact_no, "email": user_detail.email}
+        print(user_details)
+        response = {"user_detail": user_details}
+        data = request.get_json()
+        print("data",data)
+        hashed_password = bcrypt.generate_password_hash(data.get("change_password")).decode('utf-8')
+        print()
+        update_data = User(
+            id=redis_id,
+            username=data.get('username'),
+            email=data.get('email'),
+            password=hashed_password,
+            contact_no=data.get('contact_no'),
+            user_result=user_detail.user_result,
+            score=user_detail.score,
+        )
+        local_object = db.session.merge(update_data)
+        db.session.add(local_object)
+        db.session.commit()
+        print("dataa added!")
+        return response
+
+
+
+    except Exception as e2:
+        response["message"] = "Exception occurred", str(e2)
+    return response
+
+
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
     from models import QA
     try:
+
         data = request.get_json()
-        print(data)
         if data.get("data") is not None:
             import random
             qes = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).order_by(func.random()).all()
@@ -89,42 +128,40 @@ def quiz():
             for qa in qes:
                 qa_data = {'id': qa.id, 'question': qa.question,
                            'options': json.loads(qa.options)}
-                #length = len(qa_list["qa.question"])
                 qa_list.append(qa_data)
-            print(qa_list)
             response = {"status": "True", "message": "data stored successfully"}
-            return jsonify({'response': response, "data": qa_list})
+            return jsonify({'response': response, "data": qa_list[:20]})
 
         else:
+
             import random
-            questions = QA.query.order_by(func.random()).limit(5).all()
+            questions = QA.query.order_by(func.random()).all()
             qa_list = []
             for qa in questions:
                 qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question,
                            'options': json.loads(qa.options)}
                 qa_list.append(qa_data)
-
+            print(qa_list[:10])
             response = {"status": "True", "message": "data stored successfully"}
-            return {'response': response, 'data': qa_list}
+            return {'response': response, 'data': qa_list[:10]}
 
     except:
         return "{'error':'invalid data'}"
+
 
 @app.route('/view_que', methods=['GET', 'POST'])
 def view_que():
     from models import QA
     try:
-        questions = QA.query.all()
-        correct_options = json.dumps([x.correct_opt for x in questions])
-        print("correct_option", correct_options)
-        redis_cli.set('correct_opt', correct_options)
-        print("redis get", redis_cli.get('correct_opt'))
-        qa_list = []
-        for qa in questions:
-            qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question, 'options': json.loads(qa.options),
-                       'correct_opt': qa.correct_opt}
-            qa_list.append(qa_data)
-        return jsonify({'status': True, 'data': qa_list})
+        data = request.get_json()
+        if data.get("data") is not None:
+            questions = db.session.query(QA).filter(QA.sub_name.in_(eval(data.get('data')))).all()
+            qa_list = []
+            for qa in questions:
+                qa_data = {'id': qa.id, 'sub_name': qa.sub_name, 'question': qa.question,
+                           'options': json.loads(qa.options), 'correct_opt': qa.correct_opt}
+                qa_list.append(qa_data)
+            return jsonify({'status': True, 'data': qa_list})
 
     except Exception as e:
         return {"error": e}
@@ -230,19 +267,21 @@ def taken_quiz():
             import codecs
             redis_corr = eval(codecs.decode(redis_cli.get('correct_opt'), 'UTF-8'))
             data = request.get_json()
-            question1 = db.session.query(QA).filter(QA.id.in_(data.get('questions'))).all()
+            question1 = db.session.query(QA).filter(QA.id.in_(data.keys())).all()
             main_dict = {x.id: {'question': x.question, 'correct_opt': x.correct_opt} for x in question1}
-            user_result = {
-                "question": data.get('questions'),
-                "select_option": data.get('selected_option')
-            }
             count = 0
-            for i in redis_corr:
-                if i in user_result["select_option"]:
-                    count = count + 1
+            for key1, value1 in data.items():
+                for key, value in redis_corr.items():
+                    if key1 == key:
+                        if value1 == value:
+                            count = count + 1
 
-            questions = data['questions']
-            sel_opt = data['selected_option']
+            questions = []
+            sel_opt = []
+            for key, value in data.items():
+                questions.append(key)
+                sel_opt.append(value)
+
             for q in questions:
                 main_dict[int(q)].update({
                     'selected_option': sel_opt[questions.index(q)]
@@ -276,6 +315,7 @@ def result():
     try:
         from models import User
         redis_id = int(redis_cli.get('id'))
+        print(redis_id)
         user1 = User.query.filter_by(id=redis_id).first()
         if user1.user_result in [None, ""]:
             return jsonify({"response": "No Quiz Taken Yet"})
@@ -287,4 +327,20 @@ def result():
         return {"error": e}
 
 
+@app.route('/admin_result', methods=['POST', 'GET'])
+def admin_result():
+    try:
+        from models import User
+        user = User.query.all()
+        qa_list = {}
+        for qa in user:
+            if qa.user_result not in [None, ""]:
+                qa_list[qa.username] = eval(qa.user_result)
 
+            else:
+                pass
+
+        return jsonify(qa_list)
+
+    except Exception as e:
+        return {"error": e}
