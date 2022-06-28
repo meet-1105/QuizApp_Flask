@@ -1,0 +1,110 @@
+{% extends "layout1.html" %}
+{%block content%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+	 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" type="text/css"/>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<style>
+	.submit{
+
+	     text-align: center;
+	}
+</style>
+</head>
+<body>
+<script>
+	function submit_handler() {
+	console.log("modal opened"); //send with ajax?
+	$('#exampleModal').modal('show');
+    event.preventDefault();
+}
+
+function submitform() {
+  $('#new_group').submit();
+}
+</script>
+<form id="user_profile" action="" method="post">
+
+                     <br><br>
+					<h3>User Profile</h3>
+	<br>
+
+					<div class="uid">
+						<label>Name:</label>
+						<label>{{user_data.username}}</label>
+
+					</div>
+
+					<div class="mail">
+						<label>Email:</label>
+							<label>{{user_data.email}}</label>
+
+					</div>
+	                 <div class="contact_no">
+						 <label>Contact No:</label>
+		<label>{{user_data.contact_no}}</label>
+					 <br>
+						 <br>
+					 </div>
+	                 <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal"  style="height:45px; width:100px;
+               border:2px solid black;">Edit Profile</button>
+</form>
+
+<div class="modal" tabindex="-1" role="dialog" style="display:none" id="exampleModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+              <form id="edit_profile" action="/profile" method="post" tabindex="502">
+
+					<h3>Update Profile</h3>
+				  <br>
+					<div class="username">
+							<label>Name</label>
+						 <input type="text"  id="user_name" title="Must contain alphates" value={{user_data.username}} pattern="[a-zA-z\s]+" name="user_name" maxlength="20" required>
+					</div>
+				  <div class="mail">
+						<label>Email:</label>
+						<input type="email"  id="e-mail" name="e_mail" value="{{user_data.email}}" readonly="true">
+
+					</div>
+
+					<div class="passwd">
+						<label>Password</label>
+						<input type="password"  id="pswd" name="pswd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" value={{user_data.password}} title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+					</div>
+				  <div class="passwd">
+						<label>Change Password</label>
+						<input type="password"  id="change_password" name="change_pswd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+					</div>
+					<div class="uid">
+							<label>Contact No.</label>
+						  <input type="tel" name="con_no" id="con_no" value={{user_data.contact_no}}  pattern="[0-9]{3}[0-9]{3}[0-9]{4}" title="Must contain 10 digits pattern"  minlength="10" maxlength="10" required>
+					</div>
+				  <br>
+					<div class="submit">
+						<button class="btn btn-outline-dark" style="height:45px; width:100px;  border:2px solid black;">Change</button>
+					</div>
+
+				</form>
+      </div>
+	</div>
+  </div>>
+</div>
+</body>
+{% endblock %}
+<script>
+</script>
+</html>

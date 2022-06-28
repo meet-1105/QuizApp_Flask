@@ -16,7 +16,9 @@
   background-image: url('static/img/allbg.webp');
   background-size: 100%;
 }
+
         </style>
+
 </head>
 <body>
     <header class="site-header">
@@ -36,7 +38,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
                 <a class="nav-item nav-link">{{username}}</a>
-
+                    <a class="nav-item nav-link"  href="{{ url_for('profile')}}">My Profile</a>
                   <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
 
             </div>
